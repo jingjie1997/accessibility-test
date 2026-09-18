@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus / Tabindex 測試頁</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+  <h1>🔎 Focus / Tabindex 測試頁</h1>
+  <p class="subtitle">比較「原生 &lt;button&gt;」與「&lt;div&gt; 模擬按鈕」在鍵盤操作上的差異</p>
+
+  <div class="instructions">
+    請只用鍵盤操作測試：
+    <ol>
+      <li>用滑鼠點一下網址列或頁面空白處，讓焦點離開所有按鈕</li>
+      <li>按 <kbd>Tab</kbd> 鍵，觀察焦點是否會依序移到每一顆按鈕上（橘色外框）</li>
+      <li>焦點停在按鈕上時，分別按 <kbd>Enter</kbd> 和 <kbd>空白鍵</kbd>，觀察下方訊息是否有反應</li>
+    </ol>
+  </div>
+
+  <!-- ============ 區塊一：原生 button ============ -->
+  <div class="section">
+    <h2>✅ 寫法一：原生 &lt;button&gt;</h2>
+    <p class="desc">沒有加任何 tabindex、role、keydown，全部靠瀏覽器原生行為</p>
+
+    <div class="btn-row">
+      <button class="my-btn" onclick="log('native', 'A')">按鈕 A</button>
+      <button class="my-btn" onclick="log('native', 'B')">按鈕 B</button>
+      <button class="my-btn" onclick="log('native', 'C')">按鈕 C</button>
+    </div>
+
+    <div class="log-box" id="log-native">尚未觸發任何按鈕</div>
+  </div>
+
+  <!-- ============ 區塊二：div 模擬按鈕 ============ -->
+  <div class="section">
+    <h2>⚠️ 寫法二：&lt;div&gt; 模擬按鈕</h2>
+    <p class="desc">
+      手動加上 <code>role="button"</code>、<code>tabindex="0"</code>、<code>keydown</code> 事件，
+      讓行為盡量接近原生 button
+    </p>
+
+    <div class="btn-row">
+      <div class="my-btn" role="button" tabindex="0"
+           onclick="log('div', 'A')"
+           onkeydown="handleKeydown(event, 'A')">按鈕 A</div>
+      <div class="my-btn" role="button" tabindex="0"
+           onclick="log('div', 'B')"
+           onkeydown="handleKeydown(event, 'B')">按鈕 B</div>
+      <div class="my-btn" role="button" tabindex="0"
+           onclick="log('div', 'C')"
+           onkeydown="handleKeydown(event, 'C')">按鈕 C</div>
+    </div>
+
+    <div class="log-box" id="log-div">尚未觸發任何按鈕</div>
+  </div>
+
+  <!-- ============ 區塊三：addEventListener ============ -->
+  <div class="section">
+    <h2>🧩 寫法三：addEventListener</h2>
+    <p class="desc">
+      HTML 裡不寫任何 <code>onclick</code>，改由 JS 用
+      <code>addEventListener</code> 幫按鈕註冊事件
+    </p>
+
+    <div class="btn-row">
+      <button class="my-btn" id="btn-listener-a" data-label="A">按鈕 A</button>
+      <button class="my-btn" id="btn-listener-b" data-label="B">按鈕 B</button>
+      <button class="my-btn" id="btn-listener-c" data-label="C">按鈕 C</button>
+    </div>
+
+    <div class="log-box" id="log-listener">尚未觸發任何按鈕</div>
+  </div>
+
+  <!-- ============ 區塊四：tabindex="-1" ============ -->
+  <div class="section">
+    <h2>🎯 寫法四：tabindex="-1"</h2>
+    <p class="desc">
+      <code>tabindex="-1"</code> 的元素不會出現在 <kbd>Tab</kbd> 順序中，
+      但可以用 JS 呼叫 <code>.focus()</code> 主動把焦點移過去。
+      常見情境：點擊按鈕後，把焦點移到剛出現的訊息／面板，方便鍵盤與螢幕報讀器使用者馬上知道發生了什麼事。
+    </p>
+
+    <div class="btn-row">
+      <button class="my-btn" id="btn-show-panel-a" data-target="info-panel-a">顯示面板 A</button>
+      <button class="my-btn" id="btn-show-panel-b" data-target="info-panel-b">顯示面板 B</button>
+      <button class="my-btn" id="btn-show-panel-c" data-target="info-panel-c">顯示面板 C</button>
+    </div>
+
+    <div class="panel" id="info-panel-a" tabindex="-1"><strong>面板 A。</strong> 帶有 <code>tabindex="-1"</code>，Tab 鍵會跳過它，但按上方按鈕會用 <code>.focus()</code> 主動聚焦到這裡。</div>
+    <div class="panel" id="info-panel-b" tabindex="-1"><strong>面板 B。</strong> 帶有 <code>tabindex="-1"</code>，Tab 鍵會跳過它，但按上方按鈕會用 <code>.focus()</code> 主動聚焦到這裡。</div>
+    <div class="panel" id="info-panel-c" tabindex="-1"><strong>面板 C。</strong> 帶有 <code>tabindex="-1"</code>，Tab 鍵會跳過它，但按上方按鈕會用 <code>.focus()</code> 主動聚焦到這裡。</div>
+
+    <div class="log-box" id="log-negative">尚未顯示面板</div>
+  </div>
+
+  <div class="instructions">
+    💡 實驗看看：把區塊二任一顆 <code>div</code> 的 <code>tabindex="0"</code>
+    刪掉（打開瀏覽器開發者工具修改），再用 <kbd>Tab</kbd> 鍵測試，
+    會發現該按鈕直接從 Tab 順序中「消失」，鍵盤使用者完全無法選到它。
+  </div>
+
+  <!-- ============ 區塊五：焦點順序 vs 視覺順序 ============ -->
+  <div class="section">
+    <h2>🙈 觀念五：焦點順序要跟視覺順序一致</h2>
+    <p class="desc">
+      Tab 順序永遠跟著 <strong>HTML 撰寫順序（DOM 順序）</strong> 走，跟畫面「看起來」的排列無關。
+      如果只靠 CSS 把畫面翻轉，會造成焦點順序跟視覺順序對不上。
+    </p>
+
+    <p class="desc">❌ 錯誤示範：HTML 順序是 A、B、C，但用 CSS <code>flex-direction: row-reverse</code> 讓畫面看起來變成 C、B、A</p>
+    <div class="btn-row reversed">
+      <button class="my-btn">A</button>
+      <button class="my-btn">B</button>
+      <button class="my-btn">C</button>
+    </div>
+
+    <p class="desc" style="margin-top:16px;">✅ 正確示範：畫面同樣是 C、B、A，但直接把 HTML 也寫成這個順序，不靠 CSS 硬翻轉</p>
+    <div class="btn-row">
+      <button class="my-btn">C</button>
+      <button class="my-btn">B</button>
+      <button class="my-btn">A</button>
+    </div>
+  </div>
+
+  <!-- ============ 區塊六：焦點陷阱（Modal） ============ -->
+  <div class="section">
+    <h2>🔒 觀念六：焦點陷阱（Focus Trap）</h2>
+    <p class="desc">
+      對話框開啟時，<kbd>Tab</kbd>／<kbd>Shift</kbd>+<kbd>Tab</kbd> 應該只在對話框內的元素間循環，
+      不能跳到背景頁面；按 <kbd>Esc</kbd> 或關閉後，焦點要「歸還」給原本觸發它的按鈕。
+    </p>
+
+    <div class="btn-row">
+      <button class="my-btn" id="btn-open-modal">開啟對話框</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1" id="modal">
+      <h3 id="modal-title">刪除確認</h3>
+      <p>確定要刪除這個項目嗎？這個動作無法復原。</p>
+      <div class="btn-row">
+        <button class="my-btn" id="modal-confirm">確定刪除</button>
+        <button class="my-btn" id="modal-cancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 區塊七：Roving tabindex ============ -->
+  <div class="section">
+    <h2>🎹 觀念七：Roving tabindex（複合元件方向鍵導覽）</h2>
+    <p class="desc">
+      一組相關的選項中，只有「目前作用中」的項目 <code>tabindex="0"</code>，其餘都是 <code>tabindex="-1"</code>。
+      先按一次 <kbd>Tab</kbd> 進入這組元件，之後改用 <kbd>←</kbd>/<kbd>→</kbd> 方向鍵切換，
+      不需要每個選項都 Tab 一次。這正是排序類、可重組類元件（例如重組句子遊戲）最常用的模式。
+    </p>
+
+    <div class="btn-row" role="listbox" aria-label="水果選項" id="roving-list">
+      <div class="my-btn" role="option" aria-selected="true" tabindex="0" data-value="蘋果">蘋果</div>
+      <div class="my-btn" role="option" aria-selected="false" tabindex="-1" data-value="香蕉">香蕉</div>
+      <div class="my-btn" role="option" aria-selected="false" tabindex="-1" data-value="橘子">橘子</div>
+    </div>
+
+    <div class="log-box" id="log-roving">目前選取：蘋果（用 ← → 方向鍵切換，Home/End 跳到頭尾）</div>
+  </div>
+
+  <!-- ============ 區塊八：aria-live 動態內容播報 ============ -->
+  <div class="section">
+    <h2>📢 觀念八：aria-live 動態內容播報</h2>
+    <p class="desc">
+      畫面內容被 JS 動態更新、但使用者的焦點沒有跟著移動時（例如這裡按按鈕只更新旁邊的文字），
+      螢幕報讀器預設不會發現內容變了。加上 <code>aria-live="polite"</code> 後，
+      報讀器會在使用者操作空檔自動唸出新內容。視覺上你看不出差異，需要用螢幕報讀器（NVDA / VoiceOver）實測才聽得出來。
+    </p>
+
+    <div class="btn-row">
+      <button class="my-btn" id="btn-add-item">加入購物車</button>
+    </div>
+
+    <div class="log-box" id="log-live" aria-live="polite">購物車：0 件商品</div>
+  </div>
+
+  <!-- ============ 區塊九：Skip Link 跳過區塊連結 ============ -->
+  <div class="section">
+    <h2>⏭️ 觀念九：跳過區塊連結（Skip Link）</h2>
+    <p class="desc">
+      頁面開頭如果有很長的導覽選單，鍵盤使用者每次都要 Tab 過所有選單項目才能到主要內容。
+      加一個「跳到主要內容」的連結（平常視覺上隱藏，Focus 時才顯示）可以讓使用者一鍵跳過。
+      這裡不需要 JS，純靠 <code>&lt;a href="#id"&gt;</code> 搭配目標元素的 <code>tabindex="-1"</code> 就能運作。
+    </p>
+
+    <p class="desc">請把焦點移到下面這區最前面（例如點一下這行文字後按 Tab），第一個出現的應該就是跳過連結：</p>
+
+    <div class="skip-demo">
+      <a href="#skip-target" class="skip-link">跳到主要內容</a>
+      <nav class="fake-nav" aria-label="模擬導覽選單">
+        <a href="#" class="my-btn nav-link">首頁</a>
+        <a href="#" class="my-btn nav-link">關於我們</a>
+        <a href="#" class="my-btn nav-link">服務項目</a>
+        <a href="#" class="my-btn nav-link">聯絡方式</a>
+      </nav>
+      <div id="skip-target" tabindex="-1" class="panel">
+        🎉 這裡就是「主要內容」。按下上面的跳過連結後，焦點會直接跳到這裡，不用一個一個 Tab 過前面四個導覽連結。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 區塊十：可及名稱 Accessible Name ============ -->
+  <div class="section">
+    <h2>🏷️ 觀念十：可及名稱（Accessible Name）</h2>
+    <p class="desc">
+      只用圖示做的按鈕，螢幕報讀器唸不出「這是什麼」，可能只唸出「按鈕」或整個跳過。
+      一定要用文字、<code>aria-label</code>，或視覺隱藏文字，給元素一個可及名稱。
+      可以在瀏覽器開發者工具的 Accessibility 面板查看 Name 欄位確認差異。
+    </p>
+
+    <p class="desc">❌ 錯誤示範：只有圖示，沒有任何文字說明</p>
+    <div class="btn-row">
+      <button class="my-btn icon-btn">🗑️</button>
+      <button class="my-btn icon-btn">⭐</button>
+    </div>
+
+    <p class="desc" style="margin-top:16px;">✅ 正確示範：畫面看起來一樣，但用 <code>aria-label</code> 補上文字說明</p>
+    <div class="btn-row">
+      <button class="my-btn icon-btn" aria-label="刪除項目">🗑️</button>
+      <button class="my-btn icon-btn" aria-label="加入我的最愛">⭐</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
