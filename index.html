@@ -255,7 +255,7 @@
       角色宣告自己是「功能控制項」，但 <code>alt=""</code> 又代表「請忽略我」，兩者互相矛盾
     </p>
     <div class="btn-row">
-      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt=""
+      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt="" width="20" height="20"
            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z'/%3E%3Cpath d='M14.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z'/%3E%3C/svg%3E"
            onclick="log('imgFake', '❌ alt 留空的版本')"
            onkeydown="handleKeydown(event, 'imgFake', '❌ alt 留空的版本')">
@@ -265,7 +265,7 @@
       ✅ 正確寫法：&lt;img&gt; 是這個功能唯一的內容，沒有其他文字能描述用途，所以 <code>alt</code> 必須放上實際說明文字
     </p>
     <div class="btn-row">
-      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt="播放發音"
+      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt="播放發音" width="20" height="20"
            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z'/%3E%3Cpath d='M14.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z'/%3E%3C/svg%3E"
            onclick="log('imgFake', '✅ alt 有意義文字的版本')"
            onkeydown="handleKeydown(event, 'imgFake', '✅ alt 有意義文字的版本')">

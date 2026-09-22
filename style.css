@@ -260,7 +260,3 @@ kbd {
   font-size: 20px;
 }
 
-/* ---- 區塊十一：img 的 alt 與 aria-label ---- */
-img.icon-btn {
-  padding: 12px;
-}
