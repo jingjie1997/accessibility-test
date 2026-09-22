@@ -32,9 +32,11 @@ npx serve .
 | 8 | `aria-live` | 動態更新但焦點不移動的內容，需要 `aria-live="polite"` 讓螢幕報讀器播報 |
 | 9 | Skip Link（跳過區塊連結） | 讓鍵盤使用者一鍵跳過重複的導覽選單 |
 | 10 | 可及名稱（Accessible Name） | 純圖示按鈕需要 `aria-label` 才能被螢幕報讀器正確唸出 |
+| 11 | `<img>` 的 alt 與 aria-label 搭配 | `alt=""` 代表「請忽略我」，跟「功能控制項」的角色不能同時成立，詳見 [docs/img-alt-aria-label.md](docs/img-alt-aria-label.md) |
 
 ## 檔案結構
 
-- [index.html](index.html) — 十個示範小節的頁面結構
+- [index.html](index.html) — 十一個示範小節的頁面結構
 - [script.js](script.js) — 各小節的鍵盤事件、焦點管理、roving tabindex、focus trap 邏輯
 - [style.css](style.css) — 版面樣式，含 `prefers-color-scheme` 深色模式與 `:focus-visible` 焦點框樣式
+- [docs/img-alt-aria-label.md](docs/img-alt-aria-label.md) — `<img>` 的 `alt` 與 `aria-label` 判斷指南（含實際檢測修正案例，已去識別化）

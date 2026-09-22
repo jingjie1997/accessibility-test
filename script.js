@@ -4,11 +4,11 @@ function log(type, label) {
   el.textContent = `[${time}] 按鈕 ${label} 被觸發了！`;
 }
 
-function handleKeydown(event, label) {
-  // 原生 button 會自動處理 Enter / Space，div 必須自己判斷
+function handleKeydown(event, type, label) {
+  // 原生 button 會自動處理 Enter / Space，div／img 模擬按鈕必須自己判斷
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault(); // 避免空白鍵造成頁面捲動
-    log('div', label);
+    log(type, label);
   }
 }
 

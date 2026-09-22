@@ -46,13 +46,13 @@
     <div class="btn-row">
       <div class="my-btn" role="button" tabindex="0"
            onclick="log('div', 'A')"
-           onkeydown="handleKeydown(event, 'A')">按鈕 A</div>
+           onkeydown="handleKeydown(event, 'div', 'A')">按鈕 A</div>
       <div class="my-btn" role="button" tabindex="0"
            onclick="log('div', 'B')"
-           onkeydown="handleKeydown(event, 'B')">按鈕 B</div>
+           onkeydown="handleKeydown(event, 'div', 'B')">按鈕 B</div>
       <div class="my-btn" role="button" tabindex="0"
            onclick="log('div', 'C')"
-           onkeydown="handleKeydown(event, 'C')">按鈕 C</div>
+           onkeydown="handleKeydown(event, 'div', 'C')">按鈕 C</div>
     </div>
 
     <div class="log-box" id="log-div">尚未觸發任何按鈕</div>
@@ -229,6 +229,48 @@
       <button class="my-btn icon-btn" aria-label="刪除項目">🗑️</button>
       <button class="my-btn icon-btn" aria-label="加入我的最愛">⭐</button>
     </div>
+  </div>
+
+  <!-- ============ 區塊十一：img 的 alt 與 aria-label 搭配 ============ -->
+  <div class="section">
+    <h2>🖼️ 觀念十一：&lt;img&gt; 的 alt 與 aria-label 該怎麼搭配</h2>
+    <p class="desc">
+      <code>alt=""</code>（空字串）對輔助科技的意思是「這張圖不重要，請直接忽略」。
+      一個「請忽略我」的元素，不可能同時又是使用者要操作的功能控制項——記住這一點，
+      下面兩種情境該怎麼寫就能自己推導出來。可以打開瀏覽器開發者工具的 Accessibility 面板，
+      比對每個元素的 Name 欄位。詳細規則說明見
+      <a href="docs/img-alt-aria-label.md">docs/img-alt-aria-label.md</a>。
+    </p>
+
+    <p class="desc">✅ 情境一：裝飾圖示包在真正的 &lt;button&gt; 裡，名稱由外層 <code>aria-label</code> 負責，img 維持 <code>alt=""</code></p>
+    <div class="btn-row">
+      <button class="my-btn icon-btn" aria-label="播放聲音" onclick="log('imgAria', '播放聲音')">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z'/%3E%3Cpath d='M14.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z'/%3E%3C/svg%3E" alt="" width="20" height="20">
+      </button>
+    </div>
+    <div class="log-box" id="log-imgAria">尚未觸發</div>
+
+    <p class="desc" style="margin-top:16px;">
+      ❌ 情境二：&lt;img&gt; 自己被加上 <code>role="button"</code> 假扮成按鈕，卻把 <code>alt</code> 留空——
+      角色宣告自己是「功能控制項」，但 <code>alt=""</code> 又代表「請忽略我」，兩者互相矛盾
+    </p>
+    <div class="btn-row">
+      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt=""
+           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z'/%3E%3Cpath d='M14.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z'/%3E%3C/svg%3E"
+           onclick="log('imgFake', '❌ alt 留空的版本')"
+           onkeydown="handleKeydown(event, 'imgFake', '❌ alt 留空的版本')">
+    </div>
+
+    <p class="desc" style="margin-top:16px;">
+      ✅ 正確寫法：&lt;img&gt; 是這個功能唯一的內容，沒有其他文字能描述用途，所以 <code>alt</code> 必須放上實際說明文字
+    </p>
+    <div class="btn-row">
+      <img class="my-btn icon-btn" role="button" tabindex="0" aria-label="播放發音" alt="播放發音"
+           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z'/%3E%3Cpath d='M14.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z'/%3E%3C/svg%3E"
+           onclick="log('imgFake', '✅ alt 有意義文字的版本')"
+           onkeydown="handleKeydown(event, 'imgFake', '✅ alt 有意義文字的版本')">
+    </div>
+    <div class="log-box" id="log-imgFake">尚未觸發</div>
   </div>
 
 </div>
