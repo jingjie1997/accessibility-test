@@ -260,3 +260,9 @@ kbd {
   font-size: 20px;
 }
 
+/* ---- 區塊十一：img 本身就是按鈕時，width/height 屬性代表圖示本身的大小，
+   不應該被全域 box-sizing: border-box 吃掉 padding 空間，否則圖示會被壓縮到 0 高度 ---- */
+img.icon-btn {
+  box-sizing: content-box;
+}
+
